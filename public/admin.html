@@ -117,118 +117,135 @@
     </div>
     
     <script src="js/main.js"></script>
-    <script>
-        let imageCropper = null;
-        
-        function checkPassword() {
-            const password = document.getElementById('password-input').value;
-            if (password === 'admin6969') {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-            } else {
-                alert('Incorrect password');
-            }
+    <!-- Keep your HTML as is, only updating the JavaScript part -->
+<script>
+    let imageCropper = null;
+    
+    function checkPassword() {
+        const password = document.getElementById('password-input').value;
+        if (password === 'admin6969') {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+        } else {
+            alert('Incorrect password');
         }
+    }
 
-        // Function to initialize and handle image cropping
-        function initializeCropper() {
-            const photoInput = document.getElementById('photo');
-            const cropImage = document.getElementById('crop-image');
-            const cropperSection = document.querySelector('.image-cropper');
-            const applyCropBtn = document.getElementById('crop-apply');
-            const resetCropBtn = document.getElementById('crop-reset');
-            const croppedImageDataInput = document.getElementById('cropped-image-data');
+    function initializeCropper() {
+        const photoInput = document.getElementById('photo');
+        const cropImage = document.getElementById('crop-image');
+        const cropperSection = document.querySelector('.image-cropper');
+        const applyCropBtn = document.getElementById('crop-apply');
+        const resetCropBtn = document.getElementById('crop-reset');
+        const croppedImageDataInput = document.getElementById('cropped-image-data');
 
-            photoInput.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
+        photoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
 
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    cropperSection.style.display = 'block';
-                    cropImage.src = event.target.result;
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                cropperSection.style.display = 'block';
+                cropImage.src = event.target.result;
 
-                    cropImage.onload = function() {
-                        if (imageCropper) {
-                            imageCropper.destroy();
-                        }
+                cropImage.onload = function() {
+                    if (imageCropper) {
+                        imageCropper.destroy();
+                    }
 
-                        imageCropper = new Cropper(cropImage, {
-                            aspectRatio: 1, // Square crop, change as needed
-                            viewMode: 1,
-                            dragMode: 'move',
-                            autoCropArea: 0.8,
-                            background: false,
-                            responsive: true,
-                            guides: true,
-                            highlight: true,
-                            cropBoxMovable: true,
-                            cropBoxResizable: true,
-                            preview: '#preview-container'
-                        });
-                    };
+                    imageCropper = new Cropper(cropImage, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                        dragMode: 'move',
+                        autoCropArea: 0.8,
+                        background: false,
+                        responsive: true,
+                        guides: true,
+                        highlight: true,
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                        preview: '#preview-container'
+                    });
                 };
-                reader.readAsDataURL(file);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        applyCropBtn.addEventListener('click', function() {
+            if (!imageCropper) return;
+
+            const canvas = imageCropper.getCroppedCanvas({
+                maxWidth: 800,
+                maxHeight: 800,
+                fillColor: '#fff'
             });
 
-            applyCropBtn.addEventListener('click', function() {
-                if (!imageCropper) return;
+            if (canvas) {
+                const croppedImageData = canvas.toDataURL('image/jpeg');
+                croppedImageDataInput.value = croppedImageData;
+                alert('Image cropped successfully! Ready to save.');
+            }
+        });
 
-                const canvas = imageCropper.getCroppedCanvas({
-                    maxWidth: 800,
-                    maxHeight: 800,
-                    fillColor: '#fff'
+        resetCropBtn.addEventListener('click', function() {
+            if (imageCropper) {
+                imageCropper.reset();
+                croppedImageDataInput.value = '';
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeCropper();
+
+        document.getElementById('member-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const croppedData = document.getElementById('cropped-image-data').value;
+            const photoInput = document.getElementById('photo');
+
+            if (photoInput.files.length > 0 && !croppedData) {
+                if (!confirm('You haven\'t cropped the image. Continue without cropping?')) {
+                    return;
+                }
+            }
+
+            const formData = new FormData(this);
+            const memberData = {
+                name: formData.get('name'),
+                description: formData.get('description'),
+                specialty: formData.get('specialty'),
+                weakPoint: formData.get('weakPoint'),
+                croppedImageData: croppedData || null
+            };
+
+            try {
+                const response = await fetch('/api/members', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(memberData)
                 });
 
-                if (canvas) {
-                    const croppedImageData = canvas.toDataURL('image/jpeg');
-                    croppedImageDataInput.value = croppedImageData;
-                    alert('Image cropped successfully! Ready to save.');
-                }
-            });
-
-            resetCropBtn.addEventListener('click', function() {
-                if (imageCropper) {
-                    imageCropper.reset();
-                    croppedImageDataInput.value = '';
-                }
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeCropper();
-
-            document.getElementById('member-form').addEventListener('submit', function(event) {
-                event.preventDefault();
-                
-                const croppedData = document.getElementById('cropped-image-data').value;
-                const photoInput = document.getElementById('photo');
-
-                if (photoInput.files.length > 0 && !croppedData) {
-                    if (!confirm('You haven\'t cropped the image. Continue without cropping?')) {
-                        return;
-                    }
+                if (!response.ok) {
+                    throw new Error('Failed to save team member');
                 }
 
-                // Here you would typically send the form data to your server
-                const formData = new FormData(this);
-                
-                // For testing, log the form data
-                console.log('Form data to be sent:');
-                for (let [key, value] of formData.entries()) {
-                    console.log(`${key}: ${value}`);
-                }
-                
-                // Reset form and cropper
+                const result = await response.json();
+                alert('Member saved successfully!');
                 this.reset();
                 document.querySelector('.image-cropper').style.display = 'none';
                 if (imageCropper) {
                     imageCropper.destroy();
                     imageCropper = null;
                 }
-                alert('Form submitted (check console for data)');
-            });
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to save team member. Please try again.');
+            }
         });
-    </script>
+    });
+</script>
 </body>
 </html>
