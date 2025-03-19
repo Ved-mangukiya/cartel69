@@ -1,0 +1,591 @@
+/* Modern, Classic & Expensive Website Styling */
+:root {
+    --primary-color: #0f172a;
+    --secondary-color: #1e293b;
+    --accent-color: #c8a456;
+    --accent-hover: #d4b978;
+    --text-color: #f1f5f9;
+    --light-text: #e2e8f0;
+    --card-bg: #1e293b;
+    --input-bg: #334155;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --info-color: #3b82f6;
+    --border-color: rgba(255, 255, 255, 0.1);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 25px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+    border-bottom: 2px solid var(--accent-color);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--text-color);
+    letter-spacing: 0.5px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    position: relative;
+    display: inline-block;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 40%;
+    height: 2px;
+    background-color: var(--accent-color);
+}
+
+a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.admin-link, .home-link {
+    color: var(--primary-color);
+    padding: 12px 24px;
+    background: var(--accent-color);
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: none;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+.admin-link:hover, .home-link:hover {
+    background: var(--accent-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.primary {
+    background: var(--accent-color);
+    color: var(--primary-color);
+}
+
+.primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+}
+
+.danger {
+    background: var(--danger-color);
+    color: var(--text-color);
+}
+
+.danger:hover {
+    opacity: 0.9;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+}
+
+.success {
+    background: var(--success-color);
+    color: var(--text-color);
+}
+
+.success:hover {
+    opacity: 0.9;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.info {
+    background: var(--info-color);
+    color: var(--text-color);
+}
+
+.info:hover {
+    opacity: 0.9;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+}
+
+/* Team Members Display */
+.team-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 40px;
+    padding: 0 20px;
+}
+
+.member-card {
+    background: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    transition: all 0.4s;
+    position: relative;
+    border: 1px solid var(--border-color);
+}
+
+.member-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4);
+}
+
+.member-photo {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    filter: contrast(110%) brightness(90%);
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.member-info {
+    padding: 30px;
+    position: relative;
+}
+
+.member-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.member-description {
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--light-text);
+    font-weight: 300;
+}
+
+.member-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.member-specialty, .member-weakness {
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.member-specialty {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success-color);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.member-weakness {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger-color);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.view-records {
+    width: 100%;
+    padding: 15px;
+    background: var(--accent-color);
+    color: var(--primary-color);
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.view-records:hover {
+    background: var(--accent-hover);
+}
+
+/* Admin Styles */
+.member-form-section, .record-form-section {
+    background: var(--card-bg);
+    padding: 35px;
+    border-radius: 8px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    margin-bottom: 40px;
+    border: 1px solid var(--border-color);
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: var(--text-color);
+    letter-spacing: 0.5px;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(200, 164, 86, 0.2);
+}
+
+.form-group textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+.form-group input[type="file"] {
+    padding: 12px;
+    background: transparent;
+    border: 1px dashed rgba(255, 255, 255, 0.3);
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.admin-members-list {
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+}
+
+.admin-member-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s;
+}
+
+.admin-member-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.admin-member-item:last-child {
+    border-bottom: none;
+}
+
+.admin-member-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.admin-member-thumbnail {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--accent-color);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.admin-member-details h3 {
+    margin-bottom: 5px;
+    font-family: 'Playfair Display', serif;
+}
+
+.admin-member-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.photo-preview {
+    margin-top: 15px;
+    max-width: 200px;
+}
+
+.photo-preview img {
+    max-width: 100%;
+    border-radius: 4px;
+    border: 2px solid var(--accent-color);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    overflow: auto;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    margin: 5% auto;
+    padding: 35px;
+    width: 90%;
+    max-width: 700px;
+    border-radius: 8px;
+    position: relative;
+    animation: modalIn 0.4s ease-out;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-color);
+}
+
+@keyframes modalIn {
+    from {opacity: 0; transform: translateY(-70px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.close-button {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--text-color);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.close-button:hover {
+    color: var(--danger-color);
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(90deg);
+}
+
+.record-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    border-left: 3px solid var(--accent-color);
+    transition: all 0.3s;
+}
+
+.record-item:hover {
+    transform: translateX(5px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.record-date {
+    color: rgba(240, 240, 240, 0.6);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+
+.record-title {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    color: var(--text-color);
+    font-family: 'Playfair Display', serif;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: rgba(240, 240, 240, 0.6);
+    font-size: 1.2rem;
+    font-style: italic;
+}
+
+/* Login Screen Styles */
+#login-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+#login-screen > div {
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-color);
+}
+
+#login-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    color: var(--text-color);
+}
+
+#password-input {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+#password-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(200, 164, 86, 0.2);
+}
+
+#login-screen button {
+    background: var(--accent-color);
+    color: var(--primary-color);
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+}
+
+#login-screen button:hover {
+    background: var(--accent-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+        padding: 20px;
+    }
+    
+    h1::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .team-container {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        padding: 0 10px;
+    }
+    
+    .member-card {
+        max-width: 350px;
+        margin: 0 auto;
+    }
+    
+    .admin-member-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .admin-member-info {
+        flex-direction: column;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+        padding: 25px;
+    }
+
+    .member-form-section, .record-form-section {
+        padding: 25px;
+    }
+}
