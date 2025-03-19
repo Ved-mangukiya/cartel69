@@ -3,8 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cartel Members Admin</title>
+    <title>Cartel Members Admin panel</title>
     <link rel="stylesheet" href="css/style.css">
+    <!-- Add Cropper.js library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <style>
+        /* Cropper styling */
+        .image-cropper {
+            margin: 15px 0;
+            max-width: 100%;
+        }
+        .crop-container {
+            max-width: 500px;
+            height: 400px;
+            margin-bottom: 15px;
+        }
+        .crop-btn {
+            margin-right: 10px;
+            padding: 8px 15px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .crop-btn:hover {
+            background: #45a049;
+        }
+        .crop-preview {
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            padding: 5px;
+            max-width: 300px;
+        }
+    </style>
 </head>
 <body class="admin-page">
     <div id="login-screen" style="display: block;">
@@ -50,7 +83,25 @@
                     <div class="form-group">
                         <label for="photo">Photo:</label>
                         <input type="file" id="photo" name="photo" accept="image/*">
-                        <div id="photo-preview" class="photo-preview"></div>
+                        
+                        <!-- Image cropper section -->
+                        <div class="image-cropper" style="display: none;">
+                            <h3>Crop Image</h3>
+                            <div class="crop-container">
+                                <img id="crop-image" src="" style="max-width: 100%;">
+                            </div>
+                            <div class="crop-buttons">
+                                <button type="button" class="crop-btn" id="crop-apply">Apply Crop</button>
+                                <button type="button" class="crop-btn" id="crop-reset">Reset</button>
+                            </div>
+                            <div class="crop-preview">
+                                <h4>Preview</h4>
+                                <div id="preview-container"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Store cropped image data -->
+                        <input type="hidden" id="cropped-image-data" name="croppedImageData">
                     </div>
                     
                     <div class="form-actions">
@@ -99,6 +150,10 @@
     
     <script src="js/main.js"></script>
     <script>
+        // Global variables
+        let imageCropper = null;
+        
+        // Password check function
         function checkPassword() {
             const password = document.getElementById('password-input').value;
             if (password === 'admin6969') {
@@ -108,6 +163,95 @@
                 alert('Incorrect password');
             }
         }
+        
+        // Initialize cropper and event handlers when document is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle file input change
+            document.getElementById('photo').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    // Show the cropper section
+                    document.querySelector('.image-cropper').style.display = 'block';
+                    
+                    // Set image source
+                    const cropImage = document.getElementById('crop-image');
+                    cropImage.src = event.target.result;
+                    
+                    // Initialize cropper after image is loaded
+                    cropImage.onload = function() {
+                        // Destroy previous cropper if it exists
+                        if (imageCropper) {
+                            imageCropper.destroy();
+                        }
+                        
+                        // Initialize new cropper
+                        imageCropper = new Cropper(cropImage, {
+                            aspectRatio: NaN, // Free aspect ratio
+                            viewMode: 1,
+                            dragMode: 'move',
+                            autoCropArea: 0.8,
+                            background: false,
+                            responsive: true,
+                            guides: true,
+                            highlight: true,
+                            cropBoxMovable: true,
+                            cropBoxResizable: true,
+                            preview: '#preview-container'
+                        });
+                    };
+                };
+                reader.readAsDataURL(file);
+            });
+            
+            // Apply crop button
+            document.getElementById('crop-apply').addEventListener('click', function() {
+                if (!imageCropper) return;
+                
+                // Get cropped canvas
+                const canvas = imageCropper.getCroppedCanvas({
+                    maxWidth: 800,
+                    maxHeight: 800,
+                    fillColor: '#fff'
+                });
+                
+                if (canvas) {
+                    // Convert to base64 string
+                    const croppedImageData = canvas.toDataURL('image/jpeg');
+                    
+                    // Store in hidden input
+                    document.getElementById('cropped-image-data').value = croppedImageData;
+                    
+                    // Show success message
+                    alert('Image successfully cropped!');
+                }
+            });
+            
+            // Reset crop button
+            document.getElementById('crop-reset').addEventListener('click', function() {
+                if (imageCropper) {
+                    imageCropper.reset();
+                }
+            });
+            
+            // Form submission - handle the cropped image
+            document.getElementById('member-form').addEventListener('submit', function(event) {
+                // Optional: Check if image was cropped and handle accordingly
+                const croppedData = document.getElementById('cropped-image-data').value;
+                if (!croppedData && document.getElementById('photo').files.length > 0) {
+                    // Alert if user uploaded image but didn't crop
+                    if (!confirm('You haven\'t applied any crop to your image. Continue without cropping?')) {
+                        event.preventDefault();
+                        return false;
+                    }
+                }
+                
+                // Form will submit normally with the cropped image data in the hidden input
+                // Your server-side code will need to handle the base64 image data
+            });
+        });
     </script>
 </body>
 </html>
